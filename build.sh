@@ -1,6 +1,6 @@
 #!/bin/bash
 
-git checkout -b v290_backward_compatible
+#git checkout -b v290_backward_compatible
 git submodule update --init pixman
 
 mkdir -p build
