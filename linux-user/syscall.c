@@ -903,6 +903,7 @@ static type safe_##name(type1 arg1, type2 arg2, type3 arg3, type4 arg4, \
 
 safe_syscall3(ssize_t, read, int, fd, void *, buff, size_t, count)
 safe_syscall3(ssize_t, write, int, fd, const void *, buff, size_t, count)
+safe_syscall3(int, open, const char *, pathname, int, flags, mode_t, mode)
 safe_syscall4(int, openat, int, dirfd, const char *, pathname, \
               int, flags, mode_t, mode)
 safe_syscall4(pid_t, wait4, pid_t, pid, int *, status, int, options, \
@@ -7646,8 +7647,11 @@ static int do_openat(void *cpu_env, int dirfd, const char *pathname, int flags, 
 
         return fd;
     }
-
-    return safe_openat(dirfd, path(pathname), flags, mode);
+    if(dirfd == AT_FDCWD) {
+              return safe_open(path(pathname), flags, mode);
+    } else {
+              return safe_openat(dirfd, path(pathname), flags, mode);
+    }
 }
 
 #define TIMER_MAGIC 0x0caf0000
