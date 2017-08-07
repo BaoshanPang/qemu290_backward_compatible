@@ -5403,7 +5403,7 @@ static void setup_rt_frame(int sig, struct target_sigaction *ka,
     } else {
         /* ELFv2 PPC64 function pointers are entry points, but R12
          * must also be set */
-        env->nip = tswapl((target_ulong) ka->_sa_handler);
+        env->nip = ka->_sa_handler;
         env->gpr[12] = env->nip;
     }
 #else
